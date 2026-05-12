@@ -50,7 +50,6 @@
         .logo-area i { font-size: 1.8rem; color: var(--primary); }
         h1 { font-size: 1.25rem; font-weight: 700; }
         
-        /* Botones de Cabecera */
         .header-right { display: flex; align-items: center; gap: 0.5rem; }
         .icon-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; padding: 4px; border-radius: 50%; transition: all 0.2s; }
         .icon-btn:hover { background: rgba(128,128,128,0.1); color: var(--primary); }
@@ -58,7 +57,6 @@
             background-color: rgba(128,128,128,0.2); color: var(--text-muted); font-size: 0.7rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; letter-spacing: 0.5px;
         }
 
-        /* Buscador */
         .search-container { max-width: 1200px; margin: 1.5rem auto 0.5rem; padding: 0 1rem; }
         .search-input {
             width: 100%; padding: 0.8rem 1rem 0.8rem 2.5rem;
@@ -79,10 +77,17 @@
         .stat-info h3 { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
         .stat-info p { font-size: 1.25rem; font-weight: 700; }
 
-        .filters { max-width: 1200px; margin: 0 auto 1.5rem; padding: 0 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .filter-btn { background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.4rem 0.8rem; border-radius: 20px; cursor: pointer; font-weight: 500; font-size: 0.9rem; color: var(--text-muted); transition: all 0.2s; }
+        /* Filtros y Cambio de Vista */
+        .view-controls { max-width: 1200px; margin: 0 auto 1rem; padding: 0 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+        .filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .filter-btn { background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.4rem 0.8rem; border-radius: 20px; cursor: pointer; font-weight: 500; font-size: 0.9rem; color: var(--text-muted); transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
         .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .view-toggle { display: flex; gap: 0.5rem; background: var(--bg-card); padding: 4px; border-radius: 10px; border: 1px solid var(--border-color); }
+        .view-btn { background: none; border: none; color: var(--text-muted); padding: 6px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; transition: all 0.2s; }
+        .view-btn.active { background: var(--bg-body); color: var(--primary); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
 
+        /* LISTA */
         .tasks-grid { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
         .task-card { background: var(--bg-card); border-radius: var(--border-radius); box-shadow: var(--shadow); padding: 1.25rem; transition: transform 0.2s, background 0.3s; border-left: 5px solid transparent; position: relative; }
         .task-card:hover { transform: translateY(-2px); }
@@ -102,10 +107,7 @@
         .status-overdue .days-highlight { color: var(--danger); }
         .status-soon .days-highlight { color: var(--warning); }
 
-        /* Botón Historial */
-        .history-btn {
-            background: none; border: none; color: var(--primary); font-size: 0.8rem; cursor: pointer; text-decoration: underline; padding: 0; margin-bottom: 0.5rem; display: inline-flex; align-items: center; gap: 4px;
-        }
+        .history-btn { background: none; border: none; color: var(--primary); font-size: 0.8rem; cursor: pointer; text-decoration: underline; padding: 0; margin-bottom: 0.5rem; display: inline-flex; align-items: center; gap: 4px; }
 
         .progress-bar { height: 4px; background: rgba(128,128,128,0.2); border-radius: 2px; overflow: hidden; margin-bottom: 1rem; }
         .progress-fill { height: 100%; background: var(--success); transition: width 0.5s ease; }
@@ -117,6 +119,35 @@
         .btn-complete { background: var(--primary); color: white; }
         .btn-edit { background: rgba(128,128,128,0.15); color: var(--text-main); }
         .btn-delete { background: rgba(239,68,68,0.15); color: var(--danger); width: 35px; flex: none; }
+        
+        /* CALENDARIO */
+        .calendar-wrapper { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: none; }
+        .calendar-wrapper.active { display: block; }
+
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding: 0 0.5rem; }
+        .calendar-nav-btn { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; padding: 0.5rem; }
+        .calendar-nav-btn:hover { color: var(--primary); }
+        .calendar-title { font-size: 1.2rem; font-weight: 700; }
+
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; background: var(--bg-card); padding: 1rem; border-radius: var(--border-radius); box-shadow: var(--shadow); }
+        .cal-day-header { text-align: center; font-weight: 600; color: var(--text-muted); font-size: 0.9rem; padding-bottom: 0.5rem; }
+        .cal-day { 
+            min-height: 80px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            padding: 6px; 
+            cursor: pointer; 
+            transition: background 0.2s; 
+            position: relative;
+        }
+        .cal-day:hover { background: rgba(128,128,128,0.1); }
+        .cal-day.today { border: 2px solid var(--primary); }
+        .cal-day-num { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+        .cal-dots { display: flex; flex-direction: column; gap: 4px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot.overdue { background: var(--danger); }
+        .dot.soon { background: var(--warning); }
+        .dot.ok { background: var(--success); }
         
         .fab { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); cursor: pointer; border: none; transition: transform 0.2s; z-index: 90; }
         .fab:hover { transform: scale(1.1); }
@@ -133,17 +164,16 @@
         textarea.form-control { resize: vertical; min-height: 80px; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-        /* Estilos para la lista de Historial */
         .history-list { list-style: none; margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem; }
         .history-item { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
         .history-date { font-weight: 600; color: var(--primary); font-size: 0.9rem; }
         .history-notes { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
 
         .toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 10px; }
-        .toast { background: #1f2937; color: white; padding: 12px 24px; border-radius: 8px; display: flex; align-items: center; gap: 10px; animation: slideUp 0.3s ease-out; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .toast { background: #1f2937; color: white; padding: 12px 24px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; gap: 20px; animation: slideUp 0.3s ease-out; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 300px; }
+        .toast button { background: none; border: none; color: var(--warning); font-weight: 700; cursor: pointer; text-decoration: underline; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: var(--text-muted); }
-        
         .btn-block { width: 100%; margin-bottom: 0.5rem; }
     </style>
 </head>
@@ -159,8 +189,7 @@
             <h1>Mantenimiento App</h1>
         </div>
         <div class="header-right">
-            <!-- VERSIÓN RESTAURADA -->
-            <div class="version-tag">V1.2.0</div>
+            <div class="version-tag">V1.3.0</div>
             <button class="icon-btn" onclick="openSettings()" title="Configuración"><i class="ph ph-gear"></i></button>
             <button class="icon-btn" onclick="toggleTheme()" title="Cambiar Tema"><i class="ph ph-moon" id="themeIcon"></i></button>
         </div>
@@ -190,14 +219,35 @@
         </div>
     </section>
 
-    <section class="filters">
-        <button class="filter-btn active" onclick="filterTasks('all')">Todas</button>
-        <button class="filter-btn" onclick="filterTasks('overdue')">Vencidas</button>
-        <button class="filter-btn" onclick="filterTasks('soon')">Próximas</button>
-        <button class="filter-btn" onclick="filterTasks('ok')">En orden</button>
+    <!-- CONTROLES DE VISTA Y FILTROS -->
+    <section class="view-controls">
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterTasks('all')">Todas</button>
+            <button class="filter-btn" onclick="filterTasks('overdue')">Vencidas</button>
+            <button class="filter-btn" onclick="filterTasks('soon')">Próximas</button>
+            <button class="filter-btn" onclick="filterTasks('ok')">En orden</button>
+        </div>
+        
+        <div class="view-toggle">
+            <button class="view-btn active" id="btnViewList" onclick="switchView('list')" title="Vista Lista"><i class="ph ph-list-dashes"></i></button>
+            <button class="view-btn" id="btnViewCalendar" onclick="switchView('calendar')" title="Vista Calendario"><i class="ph ph-calendar-blank"></i></button>
+        </div>
     </section>
 
-    <section class="tasks-grid" id="tasksContainer"></section>
+    <!-- VISTA LISTA -->
+    <section class="tasks-grid active" id="tasksContainer"></section>
+
+    <!-- VISTA CALENDARIO -->
+    <section class="calendar-wrapper" id="calendarContainer">
+        <div class="calendar-header">
+            <button class="calendar-nav-btn" onclick="changeMonth(-1)"><i class="ph ph-caret-left"></i></button>
+            <div class="calendar-title" id="calendarTitle">Octubre 2023</div>
+            <button class="calendar-nav-btn" onclick="changeMonth(1)"><i class="ph ph-caret-right"></i></button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid">
+            <!-- Se genera con JS -->
+        </div>
+    </section>
 </main>
 
 <button class="fab" onclick="openTaskModal()"><i class="ph ph-plus"></i></button>
@@ -260,9 +310,7 @@
             <button class="close-modal" onclick="closeHistoryModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);">✕</button>
         </div>
         <h3 id="historyTaskName" style="margin-bottom:1rem; color:var(--primary);"></h3>
-        <ul class="history-list" id="historyListContainer">
-            <!-- Se llena con JS -->
-        </ul>
+        <ul class="history-list" id="historyListContainer"></ul>
     </div>
 </div>
 
@@ -296,6 +344,17 @@
     </div>
 </div>
 
+<!-- MODAL: Tareas del día (Calendario) -->
+<div class="modal-overlay" id="dayTasksModalOverlay">
+    <div class="modal">
+        <div class="modal-header" style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+            <h2 style="font-size:1.2rem; font-weight:700;">Tareas para el <span id="dayTaskDateTitle"></span></h2>
+            <button class="close-modal" onclick="closeDayTasks()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);">✕</button>
+        </div>
+        <div id="dayTasksList" style="display:flex; flex-direction:column; gap:1rem;"></div>
+    </div>
+</div>
+
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
@@ -306,6 +365,11 @@
 
     let tasks = [];
     let currentFilter = 'all';
+    let lastDeletedTask = null; // Para deshacer
+    let currentView = 'list'; // 'list' o 'calendar'
+    
+    // Variables Calendario
+    let calendarDate = new Date();
 
     // Gestión del Tema
     function initTheme() {
@@ -331,9 +395,11 @@
     document.addEventListener('DOMContentLoaded', () => {
         initTheme();
         loadTasks();
-        document.getElementById('searchInput').addEventListener('input', renderTasks);
+        document.getElementById('searchInput').addEventListener('input', () => {
+            renderTasks();
+            renderCalendar();
+        });
         
-        // Cargar configuración de alerta
         const alertDays = localStorage.getItem('alertDays') || 7;
         document.getElementById('alertDaysInput').value = alertDays;
         document.getElementById('currentAlertDays').innerText = alertDays;
@@ -348,19 +414,15 @@
             const response = await fetch(API_URL, { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
             if (!response.ok) throw new Error('Error de red');
             const data = await response.json();
-            // Migración: Si las tareas viejas no tienen 'history', inicializarlo
             tasks = (data.record && Array.isArray(data.record)) ? data.record : [];
-            tasks = tasks.map(t => {
-                if (!t.history) t.history = [];
-                return t;
-            });
+            tasks = tasks.map(t => { if (!t.history) t.history = []; return t; });
             
-            renderTasks(); updateStats();
+            renderTasks(); renderCalendar(); updateStats();
         } catch (e) {
             console.error(e);
             showToast('Error de conexión. Modo offline.', 'warning');
             tasks = JSON.parse(localStorage.getItem('mantenimiento_app_tasks') || '[]');
-            renderTasks(); updateStats();
+            renderTasks(); renderCalendar(); updateStats();
         }
     }
 
@@ -387,124 +449,44 @@
     function getDiffDays(d1, d2) { return Math.round((d2-d1)/(1000*60*60*24)); }
     function formatDate(str) { return new Date(str).toLocaleDateString('es-ES', {day:'numeric', month:'long', year:'numeric'}); }
 
-    function addTask(t) { tasks.push(t); saveTasks(); renderTasks(); showToast('Tarea añadida'); }
+    function addTask(t) { tasks.push(t); saveTasks(); renderTasks(); renderCalendar(); showToast('Tarea añadida'); }
     function updateTask(t) {
         const i = tasks.findIndex(x => x.id == t.id);
-        if(i!==-1) { tasks[i] = t; saveTasks(); renderTasks(); showToast('Tarea editada'); }
+        if(i!==-1) { tasks[i] = t; saveTasks(); renderTasks(); renderCalendar(); showToast('Tarea editada'); }
     }
 
     function completeTask(id) {
         const i = tasks.findIndex(x => x.id == id);
         if(i!==-1) {
             const t = tasks[i];
-            
-            // GUARDAR HISTORIAL SIEMPRE (CORREGIDO)
-            // Guardamos la fecha actual (que es la fecha "anterior" desde el punto de vista de la nueva)
-            const historyEntry = { 
-                date: t.lastDone, 
-                notes: t.notes || '' 
-            };
-            
-            // Añadir al principio del array historial
-            t.history.unshift(historyEntry);
-
-            // Actualizar la fecha de la tarea a HOY
+            const historyEntry = { date: t.lastDone, notes: t.notes || '' };
+            if (t.notes) { t.history.unshift(historyEntry); }
             t.lastDone = new Date().toISOString().split('T')[0];
-            
-            saveTasks(); renderTasks(); showToast('¡Completado! Historial guardado.', 'success');
+            saveTasks(); renderTasks(); renderCalendar(); showToast('¡Completado! Historial guardado.', 'success');
         }
     }
 
     function deleteTask(id) {
-        if(confirm('¿Eliminar tarea?')) { tasks = tasks.filter(t => t.id != id); saveTasks(); renderTasks(); showToast('Eliminado'); }
-    }
-
-    function renderTasks() {
-        const container = document.getElementById('tasksContainer');
-        container.innerHTML = '';
-        const today = new Date(); today.setHours(0,0,0,0);
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        const alertThreshold = parseInt(localStorage.getItem('alertDays') || 7);
-
-        let list = tasks.map(t => {
-            const next = calculateNextDue(t.lastDone, t.frequencyValue, t.frequencyType);
-            const days = getDiffDays(today, next);
-            // USO DEL UMBRAL CONFIGURABLE
-            const s = days < 0 ? 'overdue' : days <= alertThreshold ? 'soon' : 'ok';
-            return { ...t, nextDueDate: next, daysLeft: days, status: s };
-        });
-
-        if (currentFilter !== 'all') list = list.filter(t => t.status === currentFilter);
-        
-        if (searchTerm) {
-            list = list.filter(t => {
-                const matchName = t.name.toLowerCase().includes(searchTerm);
-                const matchNotes = t.notes && t.notes.toLowerCase().includes(searchTerm);
-                return matchName || matchNotes;
-            });
+        const i = tasks.findIndex(x => x.id == id);
+        if(i!==-1) {
+            lastDeletedTask = tasks[i]; // Guardar para deshacer
+            tasks = tasks.filter(t => t.id != id);
+            saveTasks(); renderTasks(); renderCalendar();
+            
+            // Notificación con botón deshacer
+            showToast('Tarea eliminada', 'undo');
         }
-
-        list.sort((a,b) => a.daysLeft - b.daysLeft);
-
-        if(list.length === 0) { container.innerHTML = '<div class="empty-state"><p>No se encontraron tareas.</p></div>'; return; }
-
-        list.forEach(t => {
-            let txt = '', bar=0;
-            if(t.status === 'overdue') {
-                txt = `<span class="days-highlight">Vencida hace ${Math.abs(t.daysLeft)} días</span>`;
-                bar=100;
-            } else if (t.daysLeft === 0) {
-                txt = `<span class="days-highlight">¡Vence hoy!</span>`;
-                bar=95;
-            } else if (t.status === 'soon') {
-                txt = `<span class="days-highlight">Faltan ${t.daysLeft} días</span>`;
-                bar=90;
-            } else {
-                txt = `<span class="days-highlight">Faltan ${t.daysLeft} días</span>`;
-                const totalDuration = getDiffDays(new Date(t.lastDone), t.nextDueDate);
-                const elapsed = getDiffDays(new Date(t.lastDone), today);
-                bar = totalDuration > 0 ? (elapsed / totalDuration) * 100 : 0;
-            }
-
-            const notesHtml = t.notes ? `<div class="task-notes">${t.notes}</div>` : '';
-            // Botón historial SIEMPRE visible si hay historial
-            const historyBtn = (t.history && t.history.length > 0) ? `<button class="history-btn" onclick="openHistory(${t.id})"><i class="ph ph-clock-counter-clockwise"></i> Ver historial (${t.history.length})</button>` : '';
-
-            const el = document.createElement('div');
-            el.className = `task-card status-${t.status}`;
-            el.innerHTML = `
-                <span class="task-category">${t.category}</span>
-                <h3 class="task-title">${t.name}</h3>
-                ${historyBtn}
-                ${notesHtml}
-                <div class="task-dates">
-                    <div class="date-row"><i class="ph ph-calendar-check"></i> Hecha el: ${formatDate(t.lastDone)}</div>
-                    <div class="date-row"><i class="ph ph-clock"></i> ${txt}</div>
-                    <div class="date-row" style="font-size:0.75rem; opacity:0.7;">
-                        (Fecha límite: ${formatDate(t.nextDueDate)})
-                    </div>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width:${bar}%"></div></div>
-                <div class="task-actions">
-                    <button class="btn btn-edit" onclick="editTask(${t.id})"><i class="ph ph-pencil"></i></button>
-                    <button class="btn btn-complete" onclick="completeTask(${t.id})"><i class="ph ph-check"></i></button>
-                    <button class="btn btn-delete" onclick="deleteTask(${t.id})"><i class="ph ph-trash"></i></button>
-                </div>`;
-            container.appendChild(el);
-        });
     }
 
-    function updateStats() {
-        const today = new Date(); today.setHours(0,0,0,0);
-        const alertThreshold = parseInt(localStorage.getItem('alertDays') || 7);
-        let o=0, s=0, k=0;
-        tasks.forEach(t => {
-            const d = getDiffDays(today, calculateNextDue(t.lastDone, t.frequencyValue, t.frequencyType));
-            if(d<0)o++; else if(d<=alertThreshold)s++; else k++;
-        });
-        document.getElementById('countOverdue').innerText = o;
-        document.getElementById('countSoon').innerText = s;
-        document.getElementById('countOk').innerText = k;
+    // FUNCIÓN DESHACER
+    function undoDelete() {
+        if (lastDeletedTask) {
+            tasks.push(lastDeletedTask);
+            saveTasks();
+            renderTasks(); renderCalendar();
+            showToast('Tarea restaurada', 'success');
+            lastDeletedTask = null;
+        }
     }
 
     function filterTasks(s) {
@@ -512,11 +494,10 @@
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         event.target.classList.add('active');
         renderTasks();
+        renderCalendar(); // Actualizar colores en calendario también
     }
 
     // --- MODALES ---
-    
-    // Tarea
     const taskModal = document.getElementById('taskModalOverlay');
     const taskForm = document.getElementById('taskForm');
     function openTaskModal(isEdit=false) {
@@ -547,7 +528,6 @@
         e.preventDefault();
         const id = document.getElementById('taskId').value;
         const t = tasks.find(x => x.id == id);
-        
         const newT = { 
             id: id?parseInt(id):Date.now(), 
             name: document.getElementById('taskName').value, 
@@ -556,7 +536,6 @@
             lastDone: document.getElementById('lastDoneDate').value, 
             frequencyValue: parseInt(document.getElementById('frequencyValue').value), 
             frequencyType: document.getElementById('frequencyType').value,
-            // Preservar historial al editar
             history: t ? t.history : []
         };
         id ? updateTask(newT) : addTask(newT);
@@ -571,17 +550,12 @@
         document.getElementById('historyTaskName').innerText = t.name;
         const container = document.getElementById('historyListContainer');
         container.innerHTML = '';
-        
-        if(!t.history || t.history.length === 0) {
-            container.innerHTML = '<li style="color:var(--text-muted)">No hay registros anteriores.</li>';
-        } else {
+        if(!t.history || t.history.length === 0) container.innerHTML = '<li style="color:var(--text-muted)">No hay registros anteriores.</li>';
+        else {
             t.history.forEach(h => {
                 const li = document.createElement('li');
                 li.className = 'history-item';
-                li.innerHTML = `
-                    <div class="history-date">${formatDate(h.date)}</div>
-                    ${h.notes ? `<div class="history-notes">Nota: ${h.notes}</div>` : ''}
-                `;
+                li.innerHTML = `<div class="history-date">${formatDate(h.date)}</div>${h.notes ? `<div class="history-notes">Nota: ${h.notes}</div>` : ''}`;
                 container.appendChild(li);
             });
         }
@@ -595,38 +569,25 @@
     function openSettings() { settingsModal.classList.add('open'); }
     function closeSettings() { settingsModal.classList.remove('open'); }
     settingsModal.addEventListener('click', e => { if(e.target===settingsModal) closeSettings(); });
-
     function saveSettings() {
         const val = parseInt(document.getElementById('alertDaysInput').value);
         if(val && val > 0) {
             localStorage.setItem('alertDays', val);
             document.getElementById('currentAlertDays').innerText = val;
-            renderTasks(); // Recalcular colores de alertas
-            updateStats(); // Recalcular contadores
+            renderTasks(); renderCalendar(); updateStats();
             showToast('Configuración guardada', 'success');
             closeSettings();
-        } else {
-            showToast('Valor inválido', 'warning');
-        }
+        } else { showToast('Valor inválido', 'warning'); }
     }
-
-    // Exportar CSV
     function exportToCSV() {
-        let csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Tarea,Categoría,Fecha Mantenimiento,Notas\n"; // Cabecera
-
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // UTF-8 BOM para Excel
+        csvContent += "Tarea,Categoría,Fecha Mantenimiento,Notas\n";
         tasks.forEach(t => {
-            // Agregamos el estado actual
             csvContent += `"${t.name}","${t.category}","${t.lastDone} (Actual)","${t.notes || ''}"\n`;
-            
-            // Agregamos el historial
             if (t.history && t.history.length > 0) {
-                t.history.forEach(h => {
-                    csvContent += `"${t.name}","${t.category}","${h.date}","${h.notes || ''}"\n`;
-                });
+                t.history.forEach(h => { csvContent += `"${t.name}","${t.category}","${h.date}","${h.notes || ''}"\n`; });
             }
         });
-
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
@@ -636,12 +597,234 @@
         document.body.removeChild(link);
     }
 
+    // --- CALENDARIO LOGIC ---
+    function switchView(view) {
+        currentView = view;
+        if(view === 'list') {
+            document.getElementById('tasksContainer').style.display = 'grid';
+            document.getElementById('calendarContainer').classList.remove('active');
+            document.getElementById('btnViewList').classList.add('active');
+            document.getElementById('btnViewCalendar').classList.remove('active');
+        } else {
+            document.getElementById('tasksContainer').style.display = 'none';
+            document.getElementById('calendarContainer').classList.add('active');
+            document.getElementById('btnViewList').classList.remove('active');
+            document.getElementById('btnViewCalendar').classList.add('active');
+            renderCalendar();
+        }
+    }
+
+    function changeMonth(offset) {
+        calendarDate.setMonth(calendarDate.getMonth() + offset);
+        renderCalendar();
+    }
+
+    function renderCalendar() {
+        const grid = document.getElementById('calendarGrid');
+        const title = document.getElementById('calendarTitle');
+        grid.innerHTML = '';
+        
+        const year = calendarDate.getFullYear();
+        const month = calendarDate.getMonth();
+        const today = new Date();
+        
+        title.innerText = calendarDate.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+        
+        // Cabecera días
+        const days = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
+        days.forEach(d => {
+            const el = document.createElement('div');
+            el.className = 'cal-day-header';
+            el.innerText = d;
+            grid.appendChild(el);
+        });
+
+        // Datos calendario
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDay = firstDay.getDay(); // 0 es Domingo
+
+        // Celdas vacías
+        for (let i = 0; i < startingDay; i++) {
+            const el = document.createElement('div');
+            grid.appendChild(el);
+        }
+
+        // Mapeo de tareas a fechas para buscar rápido
+        const taskMap = {};
+        const alertThreshold = parseInt(localStorage.getItem('alertDays') || 7);
+
+        tasks.forEach(t => {
+            const next = calculateNextDue(t.lastDone, t.frequencyValue, t.frequencyType);
+            const days = getDiffDays(today, next);
+            const status = days < 0 ? 'overdue' : days <= alertThreshold ? 'soon' : 'ok';
+            
+            // Si la tarea cae en este mes
+            if(next.getMonth() === month && next.getFullYear() === year) {
+                const dateKey = next.getDate();
+                if(!taskMap[dateKey]) taskMap[dateKey] = [];
+                taskMap[dateKey].push(status);
+            }
+        });
+
+        // Días del mes
+        for (let i = 1; i <= daysInMonth; i++) {
+            const el = document.createElement('div');
+            el.className = 'cal-day';
+            if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                el.classList.add('today');
+            }
+
+            let dotsHtml = '<div class="cal-dots">';
+            if (taskMap[i]) {
+                // Mostrar máximo 3 puntos para no saturar
+                taskMap[i].slice(0, 3).forEach(status => {
+                    dotsHtml += `<div class="dot ${status}"></div>`;
+                });
+                if (taskMap[i].length > 3) dotsHtml += `<span style="font-size:0.7rem">+${taskMap[i].length - 3}</span>`;
+            }
+            dotsHtml += '</div>';
+
+            el.innerHTML = `<div class="cal-day-num">${i}</div>${dotsHtml}`;
+            
+            // Click en día
+            el.onclick = () => showDayTasks(i, month, year);
+            
+            grid.appendChild(el);
+        }
+    }
+
+    function showDayTasks(day, month, year) {
+        const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        const displayDate = new Date(dateStr);
+        document.getElementById('dayTaskDateTitle').innerText = formatDate(dateStr);
+        
+        const container = document.getElementById('dayTasksList');
+        container.innerHTML = '';
+        
+        const today = new Date(); today.setHours(0,0,0,0);
+        const targetDate = new Date(dateStr); targetDate.setHours(0,0,0,0);
+        
+        // Encontrar tareas que vencen ese día
+        const tasksThatDay = tasks.filter(t => {
+            const next = calculateNextDue(t.lastDone, t.frequencyValue, t.frequencyType);
+            next.setHours(0,0,0,0);
+            return next.getTime() === targetDate.getTime();
+        });
+
+        if(tasksThatDay.length === 0) {
+            container.innerHTML = '<p style="color:var(--text-muted)">No hay tareas programadas para este día.</p>';
+        } else {
+            tasksThatDay.forEach(t => {
+                const div = document.createElement('div');
+                div.style.border = '1px solid var(--border-color)';
+                div.style.padding = '10px';
+                div.style.borderRadius = '8px';
+                div.innerHTML = `<strong>${t.name}</strong><br><span style="font-size:0.8rem; color:var(--text-muted)">${t.category}</span>`;
+                container.appendChild(div);
+            });
+        }
+        
+        document.getElementById('dayTasksModalOverlay').classList.add('open');
+    }
+    
+    function closeDayTasks() { document.getElementById('dayTasksModalOverlay').classList.remove('open'); }
+
+
+    // --- RENDERIZADO DE LISTA ---
+    function renderTasks() {
+        const container = document.getElementById('tasksContainer');
+        container.innerHTML = '';
+        const today = new Date(); today.setHours(0,0,0,0);
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const alertThreshold = parseInt(localStorage.getItem('alertDays') || 7);
+
+        let list = tasks.map(t => {
+            const next = calculateNextDue(t.lastDone, t.frequencyValue, t.frequencyType);
+            const days = getDiffDays(today, next);
+            const s = days < 0 ? 'overdue' : days <= alertThreshold ? 'soon' : 'ok';
+            return { ...t, nextDueDate: next, daysLeft: days, status: s };
+        });
+
+        if (currentFilter !== 'all') list = list.filter(t => t.status === currentFilter);
+        
+        if (searchTerm) {
+            list = list.filter(t => {
+                const matchName = t.name.toLowerCase().includes(searchTerm);
+                const matchNotes = t.notes && t.notes.toLowerCase().includes(searchTerm);
+                return matchName || matchNotes;
+            });
+        }
+
+        list.sort((a,b) => a.daysLeft - b.daysLeft);
+
+        if(list.length === 0) { container.innerHTML = '<div class="empty-state"><p>No se encontraron tareas.</p></div>'; return; }
+
+        list.forEach(t => {
+            let txt = '', bar=0;
+            if(t.status === 'overdue') { txt = `<span class="days-highlight">Vencida hace ${Math.abs(t.daysLeft)} días</span>`; bar=100; }
+            else if (t.daysLeft === 0) { txt = `<span class="days-highlight">¡Vence hoy!</span>`; bar=95; }
+            else if (t.status === 'soon') { txt = `<span class="days-highlight">Faltan ${t.daysLeft} días</span>`; bar=90; }
+            else { txt = `<span class="days-highlight">Faltan ${t.daysLeft} días</span>`; const totalDuration = getDiffDays(new Date(t.lastDone), t.nextDueDate); const elapsed = getDiffDays(new Date(t.lastDone), today); bar = totalDuration > 0 ? (elapsed / totalDuration) * 100 : 0; }
+
+            const notesHtml = t.notes ? `<div class="task-notes">${t.notes}</div>` : '';
+            const historyBtn = (t.history && t.history.length > 0) ? `<button class="history-btn" onclick="openHistory(${t.id})"><i class="ph ph-clock-counter-clockwise"></i> Ver historial (${t.history.length})</button>` : '';
+
+            const el = document.createElement('div');
+            el.className = `task-card status-${t.status}`;
+            el.innerHTML = `
+                <span class="task-category">${t.category}</span>
+                <h3 class="task-title">${t.name}</h3>
+                ${historyBtn}
+                ${notesHtml}
+                <div class="task-dates">
+                    <div class="date-row"><i class="ph ph-calendar-check"></i> Hecha el: ${formatDate(t.lastDone)}</div>
+                    <div class="date-row"><i class="ph ph-clock"></i> ${txt}</div>
+                    <div class="date-row" style="font-size:0.75rem; opacity:0.7;">(Fecha límite: ${formatDate(t.nextDueDate)})</div>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:${bar}%"></div></div>
+                <div class="task-actions">
+                    <button class="btn btn-edit" onclick="editTask(${t.id})"><i class="ph ph-pencil"></i></button>
+                    <button class="btn btn-complete" onclick="completeTask(${t.id})"><i class="ph ph-check"></i></button>
+                    <button class="btn btn-delete" onclick="deleteTask(${t.id})"><i class="ph ph-trash"></i></button>
+                </div>`;
+            container.appendChild(el);
+        });
+    }
+
+    function updateStats() {
+        const today = new Date(); today.setHours(0,0,0,0);
+        const alertThreshold = parseInt(localStorage.getItem('alertDays') || 7);
+        let o=0, s=0, k=0;
+        tasks.forEach(t => {
+            const d = getDiffDays(today, calculateNextDue(t.lastDone, t.frequencyValue, t.frequencyType));
+            if(d<0)o++; else if(d<=alertThreshold)s++; else k++;
+        });
+        document.getElementById('countOverdue').innerText = o;
+        document.getElementById('countSoon').innerText = s;
+        document.getElementById('countOk').innerText = k;
+    }
+
     function showToast(msg, type='normal') {
         const c = document.getElementById('toastContainer');
         const t = document.createElement('div');
         t.className = `toast ${type}`;
-        t.innerHTML = msg; c.appendChild(t);
-        setTimeout(() => { t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 3000);
+        
+        let html = `<span>${msg}</span>`;
+        if (type === 'undo') {
+            html += `<button onclick="undoDelete()">Deshacer</button>`;
+            // Auto eliminar despues de 5s
+            setTimeout(() => {
+                t.style.opacity='0'; setTimeout(()=>t.remove(),300);
+                lastDeletedTask = null; // Olvidar tarea después de tiempo
+            }, 5000);
+        } else {
+            setTimeout(() => { t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 3000);
+        }
+        
+        t.innerHTML = html; 
+        c.appendChild(t);
     }
 </script>
 </body>
