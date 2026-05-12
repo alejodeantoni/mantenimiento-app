@@ -1,0 +1,4 @@
+const CONFIG = {
+    JSONBIN_API_KEY: '$2a$10$hHnQkQ1fwFzQ4o4jBoxpWu4SlHFLM7P/G2tjwH5PlHj0BzEX2gyDO', 
+    JSONBIN_BIN_ID: '6a033a5a250b1311c33c945c'
+};

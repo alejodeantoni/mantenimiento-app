@@ -35,7 +35,10 @@
         .logo-area { display: flex; align-items: center; gap: 0.75rem; }
         .logo-area i { font-size: 2rem; color: var(--primary); }
         h1 { font-size: 1.5rem; font-weight: 700; }
-        
+        .version-tag {
+            background-color: #f3f4f6; color: var(--text-muted); font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; letter-spacing: 0.5px;
+        }
+
         .stats-bar { max-width: 1200px; margin: 2rem auto 1rem; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
         .stat-card { background: var(--bg-card); padding: 1.25rem; border-radius: var(--border-radius); box-shadow: var(--shadow); display: flex; align-items: center; gap: 1rem; }
         .stat-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
@@ -60,6 +63,10 @@
         .task-category { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); background: #f3f4f6; padding: 2px 8px; border-radius: 4px; display: inline-block; }
         .task-dates { margin: 1rem 0; font-size: 0.9rem; color: var(--text-muted); }
         .date-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .days-highlight { font-weight: 600; color: var(--text-main); }
+        .status-overdue .days-highlight { color: var(--danger); }
+        .status-soon .days-highlight { color: var(--warning); }
+
         .progress-bar { height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; margin-bottom: 1rem; }
         .progress-fill { height: 100%; background: var(--success); transition: width 0.5s ease; }
         .status-overdue .progress-fill { background: var(--danger); }
@@ -91,12 +98,16 @@
 </head>
 <body>
 
+<!-- CARGAR EL ARCHIVO DE CONFIGURACIÓN (IMPORTANTE: ANTES DEL OTRO SCRIPT) -->
+<script src="config.js"></script>
+
 <header>
     <div class="header-content">
         <div class="logo-area">
             <i class="ph ph-wrench"></i>
             <h1>Mantenimiento App</h1>
         </div>
+        <div class="version-tag">V1.0.0</div>
     </div>
 </header>
 
@@ -177,11 +188,12 @@
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-    // --- CONFIGURACIÓN JSONBIN (EDITA ESTO) ---
-    // PEGA TU X-MASTER-KEY AQUÍ (entre comillas)
-    const JSONBIN_API_KEY = '$2a$10$hHnQkQ1fwFzQ4o4jBoxpWu4SlHFLM7P/G2tjwH5PlHj0BzEX2gyDO'; 
-    // PEGA TU BIN ID AQUÍ (entre comillas)
-    const JSONBIN_BIN_ID = '6a033a5a250b1311c33c945c'; 
+    // --- LÓGICA PRINCIPAL ---
+    
+    // Leemos las claves del archivo config.js
+    const JSONBIN_API_KEY = CONFIG.JSONBIN_API_KEY;
+    const JSONBIN_BIN_ID = CONFIG.JSONBIN_BIN_ID;
+    
     const API_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
     let tasks = [];
@@ -199,7 +211,6 @@
             const response = await fetch(API_URL, { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
             if (!response.ok) throw new Error('Error de red');
             const data = await response.json();
-            // Si el bin está vacío ([]), tasks queda vacío
             tasks = (data.record && Array.isArray(data.record)) ? data.record : [];
             renderTasks(); updateStats();
         } catch (e) {
@@ -269,9 +280,21 @@
 
         list.forEach(t => {
             let txt = '', bar=0;
-            if(t.status === 'overdue') { txt = `Vencida hace ${Math.abs(t.daysLeft)} días`; bar=100; }
-            else if(t.status === 'soon') { txt = `Vence en ${t.daysLeft} días`; bar=90; }
-            else { txt = `Próximo: ${formatDate(t.nextDueDate)}`; bar=30; }
+            if(t.status === 'overdue') {
+                txt = `<span class="days-highlight">Vencida hace ${Math.abs(t.daysLeft)} días</span>`;
+                bar=100;
+            } else if (t.daysLeft === 0) {
+                txt = `<span class="days-highlight">¡Vence hoy!</span>`;
+                bar=95;
+            } else if (t.status === 'soon') {
+                txt = `<span class="days-highlight">Faltan ${t.daysLeft} días</span>`;
+                bar=90;
+            } else {
+                txt = `<span class="days-highlight">Faltan ${t.daysLeft} días</span>`;
+                const totalDuration = getDiffDays(new Date(t.lastDone), t.nextDueDate);
+                const elapsed = getDiffDays(new Date(t.lastDone), today);
+                bar = (elapsed / totalDuration) * 100;
+            }
 
             const el = document.createElement('div');
             el.className = `task-card status-${t.status}`;
@@ -279,8 +302,11 @@
                 <span class="task-category">${t.category}</span>
                 <h3 class="task-title">${t.name}</h3>
                 <div class="task-dates">
-                    <div class="date-row"><i class="ph ph-calendar-check"></i> ${formatDate(t.lastDone)}</div>
+                    <div class="date-row"><i class="ph ph-calendar-check"></i> Hecha el: ${formatDate(t.lastDone)}</div>
                     <div class="date-row"><i class="ph ph-clock"></i> ${txt}</div>
+                    <div class="date-row" style="font-size:0.8rem; opacity:0.7;">
+                        (Fecha límite: ${formatDate(t.nextDueDate)})
+                    </div>
                 </div>
                 <div class="progress-bar"><div class="progress-fill" style="width:${bar}%"></div></div>
                 <div class="task-actions">
