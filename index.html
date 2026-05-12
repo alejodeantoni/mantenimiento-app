@@ -9,10 +9,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Configuración PWA e iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Mantenimiento">
+    <!-- Configuración PWA -->
     <link rel="manifest" href="manifest.json">
     
     <!-- Iconos -->
@@ -162,6 +159,8 @@
             <h1>Mantenimiento App</h1>
         </div>
         <div class="header-right">
+            <!-- VERSIÓN RESTAURADA -->
+            <div class="version-tag">V1.2.0</div>
             <button class="icon-btn" onclick="openSettings()" title="Configuración"><i class="ph ph-gear"></i></button>
             <button class="icon-btn" onclick="toggleTheme()" title="Cambiar Tema"><i class="ph ph-moon" id="themeIcon"></i></button>
         </div>
@@ -398,19 +397,20 @@
         const i = tasks.findIndex(x => x.id == id);
         if(i!==-1) {
             const t = tasks[i];
-            // Guardar en historial ANTES de actualizar la fecha
+            
+            // GUARDAR HISTORIAL SIEMPRE (CORREGIDO)
+            // Guardamos la fecha actual (que es la fecha "anterior" desde el punto de vista de la nueva)
             const historyEntry = { 
                 date: t.lastDone, 
                 notes: t.notes || '' 
             };
             
-            // Si hay notas, las guardamos en el historial
-            if (t.notes) {
-                t.history.unshift(historyEntry);
-            }
+            // Añadir al principio del array historial
+            t.history.unshift(historyEntry);
 
+            // Actualizar la fecha de la tarea a HOY
             t.lastDone = new Date().toISOString().split('T')[0];
-            // NOTA: No borramos las notas, permitimos al usuario editarlas para el próximo ciclo si quiere
+            
             saveTasks(); renderTasks(); showToast('¡Completado! Historial guardado.', 'success');
         }
     }
@@ -467,7 +467,7 @@
             }
 
             const notesHtml = t.notes ? `<div class="task-notes">${t.notes}</div>` : '';
-            // Botón historial solo si hay historial
+            // Botón historial SIEMPRE visible si hay historial
             const historyBtn = (t.history && t.history.length > 0) ? `<button class="history-btn" onclick="openHistory(${t.id})"><i class="ph ph-clock-counter-clockwise"></i> Ver historial (${t.history.length})</button>` : '';
 
             const el = document.createElement('div');
