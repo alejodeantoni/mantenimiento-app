@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantenimiento App</title>
+    
+    <!-- Iconos y Fuentes -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Configuración PWA e iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mantenimiento">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Iconos -->
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2098/2098589.png">
+
+    <style>
+        :root {
+            --primary: #2563eb; --primary-hover: #1d4ed8; --bg-body: #f3f4f6; --bg-card: #ffffff;
+            --text-main: #1f2937; --text-muted: #6b7280; --danger: #ef4444; --warning: #f59e0b; --success: #10b981;
+            --border-radius: 12px; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.5; padding-bottom: 80px;
+        }
+        header {
+            background-color: var(--bg-card); padding: 1.5rem 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100;
+        }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo-area { display: flex; align-items: center; gap: 0.75rem; }
+        .logo-area i { font-size: 2rem; color: var(--primary); }
+        h1 { font-size: 1.5rem; font-weight: 700; }
+        
+        .stats-bar { max-width: 1200px; margin: 2rem auto 1rem; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .stat-card { background: var(--bg-card); padding: 1.25rem; border-radius: var(--border-radius); box-shadow: var(--shadow); display: flex; align-items: center; gap: 1rem; }
+        .stat-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .stat-icon.danger { background: #fee2e2; color: var(--danger); }
+        .stat-icon.warning { background: #fef3c7; color: var(--warning); }
+        .stat-icon.success { background: #d1fae5; color: var(--success); }
+        .stat-info h3 { font-size: 0.875rem; color: var(--text-muted); font-weight: 500; }
+        .stat-info p { font-size: 1.5rem; font-weight: 700; }
+
+        .filters { max-width: 1200px; margin: 0 auto 1.5rem; padding: 0 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .filter-btn { background: white; border: 1px solid #e5e7eb; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 500; color: var(--text-muted); transition: all 0.2s; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .tasks-grid { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .task-card { background: var(--bg-card); border-radius: var(--border-radius); box-shadow: var(--shadow); padding: 1.5rem; transition: transform 0.2s; border-left: 5px solid transparent; }
+        .task-card:hover { transform: translateY(-2px); }
+        .task-card.status-overdue { border-left-color: var(--danger); }
+        .task-card.status-soon { border-left-color: var(--warning); }
+        .task-card.status-ok { border-left-color: var(--success); }
+        
+        .task-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .task-category { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); background: #f3f4f6; padding: 2px 8px; border-radius: 4px; display: inline-block; }
+        .task-dates { margin: 1rem 0; font-size: 0.9rem; color: var(--text-muted); }
+        .date-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .progress-bar { height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; margin-bottom: 1rem; }
+        .progress-fill { height: 100%; background: var(--success); transition: width 0.5s ease; }
+        .status-overdue .progress-fill { background: var(--danger); }
+        .status-soon .progress-fill { background: var(--warning); }
+
+        .task-actions { display: flex; gap: 0.75rem; }
+        .btn { flex: 1; padding: 0.6rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: background 0.2s; }
+        .btn-complete { background: var(--primary); color: white; }
+        .btn-edit { background: #f3f4f6; color: var(--text-main); }
+        .btn-delete { background: #fee2e2; color: var(--danger); width: 40px; flex: none; }
+        
+        .fab { position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); cursor: pointer; border: none; transition: transform 0.2s; z-index: 90; }
+        .fab:hover { transform: scale(1.1); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s; padding: 1rem; }
+        .modal-overlay.open { opacity: 1; visibility: visible; }
+        .modal { background: white; padding: 2rem; border-radius: var(--border-radius); width: 100%; max-width: 500px; transform: translateY(20px); transition: transform 0.3s); }
+        .modal-overlay.open .modal { transform: translateY(0); }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; }
+        .form-control { width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 8px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        .toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: #1f2937; color: white; padding: 12px 24px; border-radius: 8px; display: flex; align-items: center; gap: 10px; animation: slideUp 0.3s ease-out; font-size: 0.9rem; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <div class="logo-area">
+            <i class="ph ph-wrench"></i>
+            <h1>Mantenimiento App</h1>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="stats-bar" id="statsBar">
+        <div class="stat-card">
+            <div class="stat-icon danger"><i class="ph ph-warning-circle"></i></div>
+            <div class="stat-info"><h3>Vencidas</h3><p id="countOverdue">0</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon warning"><i class="ph ph-bell-ringing"></i></div>
+            <div class="stat-info"><h3>Próximas</h3><p id="countSoon">0</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon success"><i class="ph ph-check-circle"></i></div>
+            <div class="stat-info"><h3>En orden</h3><p id="countOk">0</p></div>
+        </div>
+    </section>
+
+    <section class="filters">
+        <button class="filter-btn active" onclick="filterTasks('all')">Todas</button>
+        <button class="filter-btn" onclick="filterTasks('overdue')">Vencidas</button>
+        <button class="filter-btn" onclick="filterTasks('soon')">Próximas</button>
+        <button class="filter-btn" onclick="filterTasks('ok')">En orden</button>
+    </section>
+
+    <section class="tasks-grid" id="tasksContainer"></section>
+</main>
+
+<button class="fab" onclick="openModal()"><i class="ph ph-plus"></i></button>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <div class="modal-header" style="display:flex; justify-content:space-between; margin-bottom:1.5rem;">
+            <h2 id="modalTitle">Nueva Tarea</h2>
+            <button class="close-modal" onclick="closeModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">✕</button>
+        </div>
+        <form id="taskForm">
+            <input type="hidden" id="taskId">
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="taskName" class="form-control" placeholder="Ej. Cambiar filtro" required>
+            </div>
+            <div class="form-group">
+                <label>Categoría</label>
+                <select id="taskCategory" class="form-control">
+                    <option>General</option><option>Fontanería</option><option>Electricidad</option>
+                    <option>Calefacción</option><option>Exterior</option><option>Electrodomésticos</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Última vez realizada</label>
+                <input type="date" id="lastDoneDate" class="form-control" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Frecuencia</label>
+                    <input type="number" id="frequencyValue" class="form-control" min="1" value="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Unidad</label>
+                    <select id="frequencyType" class="form-control">
+                        <option value="days">Días</option>
+                        <option value="months">Meses</option>
+                        <option value="years" selected>Años</option>
+                    </select>
+                </div>
+            </div>
+            <div class="task-actions" style="margin-top:2rem;">
+                <button type="button" class="btn btn-edit" onclick="closeModal()">Cancelar</button>
+                <button type="submit" class="btn btn-complete">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+    // --- CONFIGURACIÓN JSONBIN (EDITA ESTO) ---
+    // PEGA TU X-MASTER-KEY AQUÍ (entre comillas)
+    const JSONBIN_API_KEY = '$2a$10$hHnQkQ1fwFzQ4o4jBoxpWu4SlHFLM7P/G2tjwH5PlHj0BzEX2gyDO'; 
+    // PEGA TU BIN ID AQUÍ (entre comillas)
+    const JSONBIN_BIN_ID = '6a033a5a250b1311c33c945c'; 
+    const API_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+
+    let tasks = [];
+    let currentFilter = 'all';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadTasks();
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+    });
+
+    // --- Lógica JSONBin ---
+    async function loadTasks() {
+        showToast('Sincronizando...', 'info');
+        try {
+            const response = await fetch(API_URL, { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
+            if (!response.ok) throw new Error('Error de red');
+            const data = await response.json();
+            // Si el bin está vacío ([]), tasks queda vacío
+            tasks = (data.record && Array.isArray(data.record)) ? data.record : [];
+            renderTasks(); updateStats();
+        } catch (e) {
+            console.error(e);
+            showToast('Error de conexión. Modo offline.', 'warning');
+            tasks = JSON.parse(localStorage.getItem('mantenimiento_app_tasks') || '[]');
+            renderTasks(); updateStats();
+        }
+    }
+
+    async function saveTasks() {
+        localStorage.setItem('mantenimiento_app_tasks', JSON.stringify(tasks));
+        try {
+            const res = await fetch(API_URL, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
+                body: JSON.stringify(tasks)
+            });
+            if(!res.ok) throw new Error('Save failed');
+            showToast('Guardado en la nube', 'success');
+        } catch(e) { showToast('Error al guardar en la nube', 'warning'); }
+    }
+
+    // --- Funciones de App ---
+    function calculateNextDue(lastDate, val, type) {
+        const d = new Date(lastDate);
+        if(type==='days') d.setDate(d.getDate()+parseInt(val));
+        if(type==='months') d.setMonth(d.getMonth()+parseInt(val));
+        if(type==='years') d.setFullYear(d.getFullYear()+parseInt(val));
+        return d;
+    }
+    function getDiffDays(d1, d2) { return Math.round((d2-d1)/(1000*60*60*24)); }
+    function formatDate(str) { return new Date(str).toLocaleDateString('es-ES', {day:'numeric', month:'long'}); }
+
+    function addTask(t) { tasks.push(t); saveTasks(); renderTasks(); showToast('Tarea añadida'); }
+    function updateTask(t) {
+        const i = tasks.findIndex(x => x.id == t.id);
+        if(i!==-1) { tasks[i] = t; saveTasks(); renderTasks(); showToast('Tarea editada'); }
+    }
+    function completeTask(id) {
+        const i = tasks.findIndex(x => x.id == id);
+        if(i!==-1) {
+            tasks[i].lastDone = new Date().toISOString().split('T')[0];
+            saveTasks(); renderTasks(); showToast('¡Completado!', 'success');
+        }
+    }
+    function deleteTask(id) {
+        if(confirm('¿Eliminar?')) { tasks = tasks.filter(t => t.id != id); saveTasks(); renderTasks(); showToast('Eliminado'); }
+    }
+
+    function renderTasks() {
+        const container = document.getElementById('tasksContainer');
+        container.innerHTML = '';
+        const today = new Date(); today.setHours(0,0,0,0);
+
+        let list = tasks.map(t => {
+            const next = calculateNextDue(t.lastDone, t.frequencyValue, t.frequencyType);
+            const days = getDiffDays(today, next);
+            const s = days < 0 ? 'overdue' : days <= 7 ? 'soon' : 'ok';
+            return { ...t, nextDueDate: next, daysLeft: days, status: s };
+        });
+
+        if(currentFilter !== 'all') list = list.filter(t => t.status === currentFilter);
+        list.sort((a,b) => a.daysLeft - b.daysLeft);
+
+        if(list.length === 0) { container.innerHTML = '<div class="empty-state"><p>No hay tareas. Pulsa + para añadir.</p></div>'; return; }
+
+        list.forEach(t => {
+            let txt = '', bar=0;
+            if(t.status === 'overdue') { txt = `Vencida hace ${Math.abs(t.daysLeft)} días`; bar=100; }
+            else if(t.status === 'soon') { txt = `Vence en ${t.daysLeft} días`; bar=90; }
+            else { txt = `Próximo: ${formatDate(t.nextDueDate)}`; bar=30; }
+
+            const el = document.createElement('div');
+            el.className = `task-card status-${t.status}`;
+            el.innerHTML = `
+                <span class="task-category">${t.category}</span>
+                <h3 class="task-title">${t.name}</h3>
+                <div class="task-dates">
+                    <div class="date-row"><i class="ph ph-calendar-check"></i> ${formatDate(t.lastDone)}</div>
+                    <div class="date-row"><i class="ph ph-clock"></i> ${txt}</div>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:${bar}%"></div></div>
+                <div class="task-actions">
+                    <button class="btn btn-edit" onclick="editTask(${t.id})"><i class="ph ph-pencil"></i></button>
+                    <button class="btn btn-complete" onclick="completeTask(${t.id})"><i class="ph ph-check"></i></button>
+                    <button class="btn btn-delete" onclick="deleteTask(${t.id})"><i class="ph ph-trash"></i></button>
+                </div>`;
+            container.appendChild(el);
+        });
+    }
+
+    function updateStats() {
+        const today = new Date(); today.setHours(0,0,0,0);
+        let o=0, s=0, k=0;
+        tasks.forEach(t => {
+            const d = getDiffDays(today, calculateNextDue(t.lastDone, t.frequencyValue, t.frequencyType));
+            if(d<0)o++; else if(d<=7)s++; else k++;
+        });
+        document.getElementById('countOverdue').innerText = o;
+        document.getElementById('countSoon').innerText = s;
+        document.getElementById('countOk').innerText = k;
+    }
+
+    function filterTasks(s) {
+        currentFilter = s;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        renderTasks();
+    }
+
+    // Modal Logic
+    const modal = document.getElementById('modalOverlay');
+    const form = document.getElementById('taskForm');
+    function openModal(isEdit=false) {
+        modal.classList.add('open');
+        if(!isEdit) { document.getElementById('modalTitle').innerText='Nueva Tarea'; form.reset(); document.getElementById('taskId').value=''; document.getElementById('lastDoneDate').value=new Date().toISOString().split('T')[0]; }
+    }
+    function closeModal() { modal.classList.remove('open'); }
+    function editTask(id) {
+        const t = tasks.find(x => x.id == id);
+        if(!t) return;
+        document.getElementById('modalTitle').innerText='Editar Tarea';
+        document.getElementById('taskId').value=t.id; document.getElementById('taskName').value=t.name;
+        document.getElementById('taskCategory').value=t.category; document.getElementById('lastDoneDate').value=t.lastDone;
+        document.getElementById('frequencyValue').value=t.frequencyValue; document.getElementById('frequencyType').value=t.frequencyType;
+        openModal(true);
+    }
+    modal.addEventListener('click', e => { if(e.target===modal) closeModal(); });
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const id = document.getElementById('taskId').value;
+        const newT = { id: id?parseInt(id):Date.now(), name: document.getElementById('taskName').value, category: document.getElementById('taskCategory').value, lastDone: document.getElementById('lastDoneDate').value, frequencyValue: parseInt(document.getElementById('frequencyValue').value), frequencyType: document.getElementById('frequencyType').value };
+        id ? updateTask(newT) : addTask(newT);
+        closeModal();
+    });
+
+    function showToast(msg, type='normal') {
+        const c = document.getElementById('toastContainer');
+        const t = document.createElement('div');
+        t.className = `toast ${type}`;
+        t.innerHTML = msg; c.appendChild(t);
+        setTimeout(() => { t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 3000);
+    }
+</script>
+</body>
+</html>
