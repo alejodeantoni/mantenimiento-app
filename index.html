@@ -53,10 +53,10 @@
         .logo-area i { font-size: 1.8rem; color: var(--primary); }
         h1 { font-size: 1.25rem; font-weight: 700; }
         
-        /* Botón Tema y Versión */
-        .header-right { display: flex; align-items: center; gap: 0.75rem; }
-        .theme-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; padding: 4px; transition: color 0.2s; }
-        .theme-btn:hover { color: var(--primary); }
+        /* Botones de Cabecera */
+        .header-right { display: flex; align-items: center; gap: 0.5rem; }
+        .icon-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; padding: 4px; border-radius: 50%; transition: all 0.2s; }
+        .icon-btn:hover { background: rgba(128,128,128,0.1); color: var(--primary); }
         .version-tag {
             background-color: rgba(128,128,128,0.2); color: var(--text-muted); font-size: 0.7rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; letter-spacing: 0.5px;
         }
@@ -96,17 +96,7 @@
         .task-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--text-main); }
         .task-category { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); background: rgba(128,128,128,0.15); padding: 2px 8px; border-radius: 4px; display: inline-block; }
         
-        /* Estilo de Notas */
-        .task-notes {
-            margin: 0.75rem 0;
-            padding: 0.5rem 0.75rem;
-            background: rgba(128,128,128,0.1);
-            border-radius: 6px;
-            font-size: 0.85rem;
-            color: var(--text-main);
-            font-style: italic;
-            border-left: 3px solid var(--text-muted);
-        }
+        .task-notes { margin: 0.75rem 0; padding: 0.5rem 0.75rem; background: rgba(128,128,128,0.1); border-radius: 6px; font-size: 0.85rem; color: var(--text-main); font-style: italic; border-left: 3px solid var(--text-muted); }
         .task-notes::before { content: '📝 '; font-style: normal; margin-right: 4px; }
 
         .task-dates { margin: 0.75rem 0; font-size: 0.85rem; color: var(--text-muted); }
@@ -114,6 +104,11 @@
         .days-highlight { font-weight: 600; color: var(--text-main); }
         .status-overdue .days-highlight { color: var(--danger); }
         .status-soon .days-highlight { color: var(--warning); }
+
+        /* Botón Historial */
+        .history-btn {
+            background: none; border: none; color: var(--primary); font-size: 0.8rem; cursor: pointer; text-decoration: underline; padding: 0; margin-bottom: 0.5rem; display: inline-flex; align-items: center; gap: 4px;
+        }
 
         .progress-bar { height: 4px; background: rgba(128,128,128,0.2); border-radius: 2px; overflow: hidden; margin-bottom: 1rem; }
         .progress-fill { height: 100%; background: var(--success); transition: width 0.5s ease; }
@@ -125,15 +120,15 @@
         .btn-complete { background: var(--primary); color: white; }
         .btn-edit { background: rgba(128,128,128,0.15); color: var(--text-main); }
         .btn-delete { background: rgba(239,68,68,0.15); color: var(--danger); width: 35px; flex: none; }
-        .btn:active { transform: scale(0.98); }
         
         .fab { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); cursor: pointer; border: none; transition: transform 0.2s; z-index: 90; }
         .fab:hover { transform: scale(1.1); }
 
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s; padding: 1rem; }
         .modal-overlay.open { opacity: 1; visibility: visible; }
-        .modal { background: var(--modal-bg); padding: 2rem; border-radius: var(--border-radius); width: 100%; max-width: 500px; transform: translateY(20px); transition: transform 0.3s; color: var(--text-main); }
+        .modal { background: var(--modal-bg); padding: 2rem; border-radius: var(--border-radius); width: 100%; max-width: 500px; transform: translateY(20px); transition: transform 0.3s; color: var(--text-main); max-height: 90vh; overflow-y: auto; }
         .modal-overlay.open .modal { transform: translateY(0); }
+        
         .form-group { margin-bottom: 1.25rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; color: var(--text-muted); }
         .form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--input-bg); color: var(--text-main); font-family: inherit; }
@@ -141,10 +136,18 @@
         textarea.form-control { resize: vertical; min-height: 80px; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
+        /* Estilos para la lista de Historial */
+        .history-list { list-style: none; margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem; }
+        .history-item { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+        .history-date { font-weight: 600; color: var(--primary); font-size: 0.9rem; }
+        .history-notes { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+
         .toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 10px; }
         .toast { background: #1f2937; color: white; padding: 12px 24px; border-radius: 8px; display: flex; align-items: center; gap: 10px; animation: slideUp 0.3s ease-out; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: var(--text-muted); }
+        
+        .btn-block { width: 100%; margin-bottom: 0.5rem; }
     </style>
 </head>
 <body>
@@ -159,16 +162,13 @@
             <h1>Mantenimiento App</h1>
         </div>
         <div class="header-right">
-            <div class="version-tag">V1.1.0</div>
-            <button class="theme-btn" onclick="toggleTheme()" title="Cambiar Tema">
-                <i class="ph ph-moon" id="themeIcon"></i>
-            </button>
+            <button class="icon-btn" onclick="openSettings()" title="Configuración"><i class="ph ph-gear"></i></button>
+            <button class="icon-btn" onclick="toggleTheme()" title="Cambiar Tema"><i class="ph ph-moon" id="themeIcon"></i></button>
         </div>
     </div>
 </header>
 
 <main>
-    <!-- NUEVO BUSCADOR -->
     <section class="search-container">
         <div class="search-icon-wrapper">
             <i class="ph ph-magnifying-glass"></i>
@@ -201,14 +201,14 @@
     <section class="tasks-grid" id="tasksContainer"></section>
 </main>
 
-<button class="fab" onclick="openModal()"><i class="ph ph-plus"></i></button>
+<button class="fab" onclick="openTaskModal()"><i class="ph ph-plus"></i></button>
 
-<!-- Modal -->
-<div class="modal-overlay" id="modalOverlay">
+<!-- MODAL: Crear/Editar Tarea -->
+<div class="modal-overlay" id="taskModalOverlay">
     <div class="modal">
         <div class="modal-header" style="display:flex; justify-content:space-between; margin-bottom:1.5rem;">
-            <h2 id="modalTitle" style="font-size:1.25rem; font-weight:700;">Nueva Tarea</h2>
-            <button class="close-modal" onclick="closeModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);">✕</button>
+            <h2 id="taskModalTitle" style="font-size:1.25rem; font-weight:700;">Nueva Tarea</h2>
+            <button class="close-modal" onclick="closeTaskModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);">✕</button>
         </div>
         <form id="taskForm">
             <input type="hidden" id="taskId">
@@ -223,7 +223,6 @@
                     <option>Calefacción</option><option>Exterior</option><option>Electrodomésticos</option>
                 </select>
             </div>
-            <!-- NUEVO CAMPO NOTAS -->
             <div class="form-group">
                 <label>Notas / Detalles (Opcional)</label>
                 <textarea id="taskNotes" class="form-control" placeholder="Ej. Modelo del filtro, compra necesaria..."></textarea>
@@ -247,24 +246,69 @@
                 </div>
             </div>
             <div class="task-actions" style="margin-top:2rem;">
-                <button type="button" class="btn btn-edit" onclick="closeModal()">Cancelar</button>
+                <button type="button" class="btn btn-edit" onclick="closeTaskModal()">Cancelar</button>
                 <button type="submit" class="btn btn-complete">Guardar</button>
             </div>
         </form>
     </div>
 </div>
 
+<!-- MODAL: Historial -->
+<div class="modal-overlay" id="historyModalOverlay">
+    <div class="modal">
+        <div class="modal-header" style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+            <h2 style="font-size:1.2rem; font-weight:700;">Historial</h2>
+            <button class="close-modal" onclick="closeHistoryModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);">✕</button>
+        </div>
+        <h3 id="historyTaskName" style="margin-bottom:1rem; color:var(--primary);"></h3>
+        <ul class="history-list" id="historyListContainer">
+            <!-- Se llena con JS -->
+        </ul>
+    </div>
+</div>
+
+<!-- MODAL: Configuración -->
+<div class="modal-overlay" id="settingsModalOverlay">
+    <div class="modal">
+        <div class="modal-header" style="display:flex; justify-content:space-between; margin-bottom:1.5rem;">
+            <h2 style="font-size:1.25rem; font-weight:700;">Configuración</h2>
+            <button class="close-modal" onclick="closeSettings()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);">✕</button>
+        </div>
+        
+        <div class="form-group">
+            <label>Días antes para alerta (Actual: <span id="currentAlertDays">7</span>)</label>
+            <input type="number" id="alertDaysInput" class="form-control" value="7" min="1">
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">¿Cuántos días antes quieres que la tarea se marque como "Próxima"?</p>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-edit btn-block" onclick="saveSettings()">Guardar Cambios</button>
+        </div>
+
+        <hr style="border:0; border-top:1px solid var(--border-color); margin: 2rem 0;">
+
+        <div class="form-group">
+            <label>Exportar Datos</label>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:10px;">Descarga un archivo Excel (CSV) con todas tus tareas y su historial.</p>
+            <button class="btn btn-complete btn-block" onclick="exportToCSV()">
+                <i class="ph ph-download-simple"></i> Descargar Backup CSV
+            </button>
+        </div>
+    </div>
+</div>
+
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-    // --- CONFIGURACIÓN Y TEMAS ---
-    
-    // Leemos las claves del archivo config.js
+    // --- CONFIGURACIÓN Y VARIABLES ---
     const JSONBIN_API_KEY = CONFIG.JSONBIN_API_KEY;
     const JSONBIN_BIN_ID = CONFIG.JSONBIN_BIN_ID;
     const API_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
-    // Gestión del Tema (Oscuro / Claro)
+    let tasks = [];
+    let currentFilter = 'all';
+
+    // Gestión del Tema
     function initTheme() {
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
@@ -284,28 +328,34 @@
         icon.className = theme === 'dark' ? 'ph ph-sun' : 'ph ph-moon';
     }
 
-    // --- LÓGICA PRINCIPAL ---
-    let tasks = [];
-    let currentFilter = 'all';
-
+    // Inicialización
     document.addEventListener('DOMContentLoaded', () => {
-        initTheme(); // Cargar tema
+        initTheme();
         loadTasks();
-        
-        // Listener para el buscador
         document.getElementById('searchInput').addEventListener('input', renderTasks);
+        
+        // Cargar configuración de alerta
+        const alertDays = localStorage.getItem('alertDays') || 7;
+        document.getElementById('alertDaysInput').value = alertDays;
+        document.getElementById('currentAlertDays').innerText = alertDays;
 
         if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
     });
 
-    // --- Lógica JSONBin ---
+    // --- LÓGICA JSONBIN ---
     async function loadTasks() {
         showToast('Sincronizando...', 'info');
         try {
             const response = await fetch(API_URL, { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
             if (!response.ok) throw new Error('Error de red');
             const data = await response.json();
+            // Migración: Si las tareas viejas no tienen 'history', inicializarlo
             tasks = (data.record && Array.isArray(data.record)) ? data.record : [];
+            tasks = tasks.map(t => {
+                if (!t.history) t.history = [];
+                return t;
+            });
+            
             renderTasks(); updateStats();
         } catch (e) {
             console.error(e);
@@ -324,11 +374,10 @@
                 body: JSON.stringify(tasks)
             });
             if(!res.ok) throw new Error('Save failed');
-            // showToast('Guardado', 'success'); // Comentado para no molestar tanto
-        } catch(e) { showToast('Error guardando', 'warning'); }
+        } catch(e) { showToast('Error guardando en la nube', 'warning'); }
     }
 
-    // --- Funciones de App ---
+    // --- LÓGICA DE APP ---
     function calculateNextDue(lastDate, val, type) {
         const d = new Date(lastDate);
         if(type==='days') d.setDate(d.getDate()+parseInt(val));
@@ -337,22 +386,37 @@
         return d;
     }
     function getDiffDays(d1, d2) { return Math.round((d2-d1)/(1000*60*60*24)); }
-    function formatDate(str) { return new Date(str).toLocaleDateString('es-ES', {day:'numeric', month:'long'}); }
+    function formatDate(str) { return new Date(str).toLocaleDateString('es-ES', {day:'numeric', month:'long', year:'numeric'}); }
 
     function addTask(t) { tasks.push(t); saveTasks(); renderTasks(); showToast('Tarea añadida'); }
     function updateTask(t) {
         const i = tasks.findIndex(x => x.id == t.id);
         if(i!==-1) { tasks[i] = t; saveTasks(); renderTasks(); showToast('Tarea editada'); }
     }
+
     function completeTask(id) {
         const i = tasks.findIndex(x => x.id == id);
         if(i!==-1) {
-            tasks[i].lastDone = new Date().toISOString().split('T')[0];
-            saveTasks(); renderTasks(); showToast('¡Completado!', 'success');
+            const t = tasks[i];
+            // Guardar en historial ANTES de actualizar la fecha
+            const historyEntry = { 
+                date: t.lastDone, 
+                notes: t.notes || '' 
+            };
+            
+            // Si hay notas, las guardamos en el historial
+            if (t.notes) {
+                t.history.unshift(historyEntry);
+            }
+
+            t.lastDone = new Date().toISOString().split('T')[0];
+            // NOTA: No borramos las notas, permitimos al usuario editarlas para el próximo ciclo si quiere
+            saveTasks(); renderTasks(); showToast('¡Completado! Historial guardado.', 'success');
         }
     }
+
     function deleteTask(id) {
-        if(confirm('¿Eliminar?')) { tasks = tasks.filter(t => t.id != id); saveTasks(); renderTasks(); showToast('Eliminado'); }
+        if(confirm('¿Eliminar tarea?')) { tasks = tasks.filter(t => t.id != id); saveTasks(); renderTasks(); showToast('Eliminado'); }
     }
 
     function renderTasks() {
@@ -360,21 +424,18 @@
         container.innerHTML = '';
         const today = new Date(); today.setHours(0,0,0,0);
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const alertThreshold = parseInt(localStorage.getItem('alertDays') || 7);
 
-        // 1. Mapeamos tareas con cálculos de fechas
         let list = tasks.map(t => {
             const next = calculateNextDue(t.lastDone, t.frequencyValue, t.frequencyType);
             const days = getDiffDays(today, next);
-            const s = days < 0 ? 'overdue' : days <= 7 ? 'soon' : 'ok';
+            // USO DEL UMBRAL CONFIGURABLE
+            const s = days < 0 ? 'overdue' : days <= alertThreshold ? 'soon' : 'ok';
             return { ...t, nextDueDate: next, daysLeft: days, status: s };
         });
 
-        // 2. Filtramos por categoría (Botones) O Buscador
-        if (currentFilter !== 'all') {
-            list = list.filter(t => t.status === currentFilter);
-        }
+        if (currentFilter !== 'all') list = list.filter(t => t.status === currentFilter);
         
-        // 3. Filtramos por texto del buscador
         if (searchTerm) {
             list = list.filter(t => {
                 const matchName = t.name.toLowerCase().includes(searchTerm);
@@ -383,7 +444,6 @@
             });
         }
 
-        // 4. Ordenamos
         list.sort((a,b) => a.daysLeft - b.daysLeft);
 
         if(list.length === 0) { container.innerHTML = '<div class="empty-state"><p>No se encontraron tareas.</p></div>'; return; }
@@ -406,15 +466,17 @@
                 bar = totalDuration > 0 ? (elapsed / totalDuration) * 100 : 0;
             }
 
-            // Renderizado de Notas (si existen)
             const notesHtml = t.notes ? `<div class="task-notes">${t.notes}</div>` : '';
+            // Botón historial solo si hay historial
+            const historyBtn = (t.history && t.history.length > 0) ? `<button class="history-btn" onclick="openHistory(${t.id})"><i class="ph ph-clock-counter-clockwise"></i> Ver historial (${t.history.length})</button>` : '';
 
             const el = document.createElement('div');
             el.className = `task-card status-${t.status}`;
             el.innerHTML = `
                 <span class="task-category">${t.category}</span>
                 <h3 class="task-title">${t.name}</h3>
-                ${notesHtml} <!-- AQUÍ SE INSERTAN LAS NOTAS -->
+                ${historyBtn}
+                ${notesHtml}
                 <div class="task-dates">
                     <div class="date-row"><i class="ph ph-calendar-check"></i> Hecha el: ${formatDate(t.lastDone)}</div>
                     <div class="date-row"><i class="ph ph-clock"></i> ${txt}</div>
@@ -434,10 +496,11 @@
 
     function updateStats() {
         const today = new Date(); today.setHours(0,0,0,0);
+        const alertThreshold = parseInt(localStorage.getItem('alertDays') || 7);
         let o=0, s=0, k=0;
         tasks.forEach(t => {
             const d = getDiffDays(today, calculateNextDue(t.lastDone, t.frequencyValue, t.frequencyType));
-            if(d<0)o++; else if(d<=7)s++; else k++;
+            if(d<0)o++; else if(d<=alertThreshold)s++; else k++;
         });
         document.getElementById('countOverdue').innerText = o;
         document.getElementById('countSoon').innerText = s;
@@ -451,48 +514,127 @@
         renderTasks();
     }
 
-    // Modal Logic
-    const modal = document.getElementById('modalOverlay');
-    const form = document.getElementById('taskForm');
-    function openModal(isEdit=false) {
-        modal.classList.add('open');
+    // --- MODALES ---
+    
+    // Tarea
+    const taskModal = document.getElementById('taskModalOverlay');
+    const taskForm = document.getElementById('taskForm');
+    function openTaskModal(isEdit=false) {
+        taskModal.classList.add('open');
         if(!isEdit) { 
-            document.getElementById('modalTitle').innerText='Nueva Tarea'; 
-            form.reset(); 
+            document.getElementById('taskModalTitle').innerText='Nueva Tarea'; 
+            taskForm.reset(); 
             document.getElementById('taskId').value=''; 
             document.getElementById('lastDoneDate').value=new Date().toISOString().split('T')[0]; 
         }
     }
-    function closeModal() { modal.classList.remove('open'); }
+    function closeTaskModal() { taskModal.classList.remove('open'); }
     function editTask(id) {
         const t = tasks.find(x => x.id == id);
         if(!t) return;
-        document.getElementById('modalTitle').innerText='Editar Tarea';
+        document.getElementById('taskModalTitle').innerText='Editar Tarea';
         document.getElementById('taskId').value=t.id; 
         document.getElementById('taskName').value=t.name;
         document.getElementById('taskCategory').value=t.category; 
-        document.getElementById('taskNotes').value=t.notes || ''; // Cargar notas
+        document.getElementById('taskNotes').value=t.notes || '';
         document.getElementById('lastDoneDate').value=t.lastDone;
         document.getElementById('frequencyValue').value=t.frequencyValue; 
         document.getElementById('frequencyType').value=t.frequencyType;
-        openModal(true);
+        openTaskModal(true);
     }
-    modal.addEventListener('click', e => { if(e.target===modal) closeModal(); });
-    form.addEventListener('submit', e => {
+    taskModal.addEventListener('click', e => { if(e.target===taskModal) closeTaskModal(); });
+    taskForm.addEventListener('submit', e => {
         e.preventDefault();
         const id = document.getElementById('taskId').value;
+        const t = tasks.find(x => x.id == id);
+        
         const newT = { 
             id: id?parseInt(id):Date.now(), 
             name: document.getElementById('taskName').value, 
             category: document.getElementById('taskCategory').value, 
-            notes: document.getElementById('taskNotes').value, // Guardar notas
+            notes: document.getElementById('taskNotes').value, 
             lastDone: document.getElementById('lastDoneDate').value, 
             frequencyValue: parseInt(document.getElementById('frequencyValue').value), 
-            frequencyType: document.getElementById('frequencyType').value 
+            frequencyType: document.getElementById('frequencyType').value,
+            // Preservar historial al editar
+            history: t ? t.history : []
         };
         id ? updateTask(newT) : addTask(newT);
-        closeModal();
+        closeTaskModal();
     });
+
+    // Historial
+    const historyModal = document.getElementById('historyModalOverlay');
+    function openHistory(id) {
+        const t = tasks.find(x => x.id == id);
+        if(!t) return;
+        document.getElementById('historyTaskName').innerText = t.name;
+        const container = document.getElementById('historyListContainer');
+        container.innerHTML = '';
+        
+        if(!t.history || t.history.length === 0) {
+            container.innerHTML = '<li style="color:var(--text-muted)">No hay registros anteriores.</li>';
+        } else {
+            t.history.forEach(h => {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                li.innerHTML = `
+                    <div class="history-date">${formatDate(h.date)}</div>
+                    ${h.notes ? `<div class="history-notes">Nota: ${h.notes}</div>` : ''}
+                `;
+                container.appendChild(li);
+            });
+        }
+        historyModal.classList.add('open');
+    }
+    function closeHistoryModal() { historyModal.classList.remove('open'); }
+    historyModal.addEventListener('click', e => { if(e.target===historyModal) closeHistoryModal(); });
+
+    // Configuración
+    const settingsModal = document.getElementById('settingsModalOverlay');
+    function openSettings() { settingsModal.classList.add('open'); }
+    function closeSettings() { settingsModal.classList.remove('open'); }
+    settingsModal.addEventListener('click', e => { if(e.target===settingsModal) closeSettings(); });
+
+    function saveSettings() {
+        const val = parseInt(document.getElementById('alertDaysInput').value);
+        if(val && val > 0) {
+            localStorage.setItem('alertDays', val);
+            document.getElementById('currentAlertDays').innerText = val;
+            renderTasks(); // Recalcular colores de alertas
+            updateStats(); // Recalcular contadores
+            showToast('Configuración guardada', 'success');
+            closeSettings();
+        } else {
+            showToast('Valor inválido', 'warning');
+        }
+    }
+
+    // Exportar CSV
+    function exportToCSV() {
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Tarea,Categoría,Fecha Mantenimiento,Notas\n"; // Cabecera
+
+        tasks.forEach(t => {
+            // Agregamos el estado actual
+            csvContent += `"${t.name}","${t.category}","${t.lastDone} (Actual)","${t.notes || ''}"\n`;
+            
+            // Agregamos el historial
+            if (t.history && t.history.length > 0) {
+                t.history.forEach(h => {
+                    csvContent += `"${t.name}","${t.category}","${h.date}","${h.notes || ''}"\n`;
+                });
+            }
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "mantenimiento_backup.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 
     function showToast(msg, type='normal') {
         const c = document.getElementById('toastContainer');
